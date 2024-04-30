@@ -1,0 +1,30 @@
+#!/bin/sh
+#
+#  UNIXFILE to DOSFILE(UNIXFILE.txt) auto generate
+#
+#  2001/09/05 V1.01 -rep support by oga.
+#
+
+TMPF=/tmp/tmp_u2dos2_$$
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+    echo "usage: u2dos2 [-rep] <file> ..."
+    exit 1
+fi
+
+if [ "$1" = "-rep" ]; then
+    REP=1
+    shift
+fi
+
+for i in $*
+do
+    if [ "$REP" = "1" ]; then
+      echo "convert and replace $i (replace)"
+      u2dos $i > $TMPF
+      mv $TMPF $i
+    else
+      echo "convert to $i.txt ..."
+      u2dos $i > $i.txt
+    fi
+done

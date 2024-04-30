@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+#   小数点も計算する expr
+#
+#     1995/04/19 V1.00 by oga.
+#     2010/08/14 V1.01 support -s
+#					by oga.
+SCALE=5
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+	echo "usage : expr2 [-s <scale($SCALE)>] <式>     : <式>を小数点以下まで計算します"
+	echo "        カッコを使用する場合<式>を\"\"で囲って下さい"
+	echo "        乗算は 'x' を使って下さい"
+	echo "        (例) expr2 2x4/3"
+	echo "        -s: 小数点以下精度(default:$SCALE)"
+	exit 1
+fi
+
+if [ "$1" = "-s" ]; then
+	SCALE=$2
+	shift
+	shift
+fi
+
+bc << EOF
+scale=$SCALE
+`echo $* |sed -e "s/x/\*/g" -e "s/,//g"`
+EOF

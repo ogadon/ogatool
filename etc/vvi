@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+#       vvi : ファイル選択画面つきvi (その他のコマンドも可能)
+#
+#       usage : vvi [ 実行コマンド  [引数1, 引数2, ...] ]
+#
+#               実行コマンド : ファイル選択後実行するコマンド(default : "vi")
+#               引数n        : 実行コマンドの引数
+#                                コマンド <file> 引数1, 引数2, ... が実行される
+#               (例) vvi less ... ファイル選択後lessを実行する。
+#
+#		1995.05.15   'v'コマンドサポート
+#		1996.02.24   port to Linux
+
+#echo "`date` `hostname` `id -u -n`" >> /home/oga/tmp/log_vvi
+
+X=0
+Y=0
+OFF_Y=0
+CODE=0
+while [ "$CODE" = "0" ]
+do
+  if [ "$Target" = "H3050" ] ; then
+	  /home/bin/3050/filer $X $Y $OFF_Y 2> /tmp/vvi$$
+  else
+	  #/home/oga/bin/filer $X $Y $OFF_Y 2> /tmp/vvi$$
+	  $HOME/bin/filer $X $Y $OFF_Y 2> /tmp/vvi$$
+  fi
+  CODE="$?"
+  FILE_NAME=`cat /tmp/vvi$$ | awk '{ print $1 }'`
+  X=`cat /tmp/vvi$$ | awk '{ print $2 }'`
+  Y=`cat /tmp/vvi$$ | awk '{ print $3 }'`
+  PWD=`cat /tmp/vvi$$ | awk '{ print $4 }'`
+  OFF_Y=`cat /tmp/vvi$$ | awk '{ print $5 }'`
+  DEL_F=`cat /tmp/vvi$$ | awk '{ print $6 }'`
+  VI_F=`cat /tmp/vvi$$ | awk '{ print $7 }'`
+  cd $PWD
+  if [ "$CODE" = "0" ] ; then
+	if [ "$DEL_F" = "1" ]; then
+		stty echo
+		echo "\033[7mDELETE\033[0m \c"
+		rm -i $FILE_NAME
+	else
+		if [ "$1" = "" -o "$VI_F" = "1" ] ; then
+			vi $FILE_NAME     
+		else
+			$1 $FILE_NAME $2 $3 $4 $5 $6 $7 $8 $9
+		fi
+	fi
+  fi
+done
+clear
+rm /tmp/vvi$$

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# for HI-UX/WE2
+#ERRNO_H=/usr/include/sys/errno.h
+
+# for Linux
+#ERRNO_H=/usr/src/linux/include/asm/errno.h
+#ERRNO_H=/usr/include/asm/errno.h
+ERRNO_H="/usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h"
+
+echo ""
+grep "#.*define.*[ 	]${1}[ 	][ 	]*" $ERRNO_H |head -1
+echo ""

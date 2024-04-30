@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+#   カレントディレクトリにあるWindowsの.libから関数を探す
+#
+#   *.libをコピーしたディレクトリで、winlibsrch <func_name> を実行する
+#
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+    echo "usage: $0 <func_name>"
+    exit 1
+fi
+KEY=$1
+
+cd /home/oga/win/lib
+
+#for i in `ls`
+for i in `find . -type f`
+do
+    strings $i |grep -q $KEY
+    if [ $? -eq 0 ]; then
+	echo "■ $KEY found in $i "
+	strings $i |grep $KEY
+    fi
+done

@@ -1,0 +1,70 @@
+#!/bin/sh
+#
+#  split2 : split & create merge script tool
+#
+#  2001/09/07 V1.00 by oga
+#
+if [ "$2" = "" ]; then
+    echo "usage : `basename $0` <filename> <size>{k|m}" 
+    echo "   ex.) `basename $0` xxxx.lzh 1m"
+    exit 1
+fi
+
+NAME=$1
+SEP_SIZE=$2
+DIR=split_dat
+PREFIX=spdat
+
+if [ -d $DIR ]; then
+    echo "delete $DIR/${PREFIX}* OK?  [no:^C]"
+    read X
+    rm $DIR/${PREFIX}*
+else
+    mkdir -p $DIR
+fi
+
+split -b $SEP_SIZE --verbose $NAME $DIR/${PREFIX}_
+if [ $? -ne 0 ]; then
+    echo "Error: split failed."
+    exit 1;
+fi
+
+cd $DIR
+
+FIRST=1
+echo "@echo off" > $PREFIX.bat0
+echo "REM  create by split2  (C)oga." >> $PREFIX.bat0
+echo "IF EXIST "$NAME" GOTO ERROR" >> $PREFIX.bat0
+for i in `ls ${PREFIX}_*`
+do
+    if [ $FIRST -eq 1 ]; then
+	FIRST=0
+        echo "copy /B \"$i\" \"$NAME\"" >> $PREFIX.bat0
+    else
+        echo "copy /B \"$NAME\"+\"$i\" \"$NAME\"" >> $PREFIX.bat0
+    fi
+done
+echo "GOTO END" >> $PREFIX.bat0
+echo ":ERROR" >> $PREFIX.bat0
+echo "ECHO ##### Error: $NAME already exist. #####" >> $PREFIX.bat0
+echo "PAUSE" >> $PREFIX.bat0
+echo "exit" >> $PREFIX.bat0
+echo ":END" >> $PREFIX.bat0
+echo "ECHO ##### create $NAME done. #####" >> $PREFIX.bat0
+echo "PAUSE" >> $PREFIX.bat0
+
+sed "s/$//" $PREFIX.bat0 > $PREFIX.bat
+rm -f $PREFIX.bat0
+
+cat > $PREFIX.sh << EOF
+#!/bin/sh
+#  create by split2  (C)oga.
+if [ -f '$NAME' ]; then
+    echo '##### Error: $NAME already exist. #####'
+    exit 1
+fi
+cat ${PREFIX}_* >> '$NAME'
+echo '##### create $NAME done. #####'
+EOF
+
+

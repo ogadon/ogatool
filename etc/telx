@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+#   telx : search telephone number system (w
+#
+#
+if [ -z "$1" ] ; then
+	echo "usage : telx {[key] | -e}"
+	echo ""
+	echo "    -e : edit tel data"
+	echo ""
+	echo "ex) telx asahi"
+	exit 1
+fi
+if [ "`uname`" = "HI-UX" ]; then
+	TELDAT=/home/oga/doc/tel_data
+else
+	TELDAT=$HOME/doc/tel_data
+fi
+
+if [ "$1" = "-e" ]; then
+    vi $TELDAT
+    echo "Edit end."
+    exit 0
+fi
+
+echo ""
+grep -q $1 $TELDAT
+if [ $? -ne 0 ]; then
+    echo "$1 not registerd."
+else
+    grep $1 $TELDAT
+fi
+echo ""
+
+

@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+#	usage : add ファイル名 [加算項目の位置]
+#
+#		先頭に#がある行はコメントとみなします。
+#
+if [ -z "$1" ];then
+	echo "usage : add ファイル名 [加算項目の位置]"
+	exit 1
+fi
+
+if [ "$1" = "-" ]; then
+	FILE=
+else
+	FILE=$1
+fi
+
+if [ -z "$2" ];then
+	CLM=1
+else
+	CLM=$2
+fi
+
+grep -v -e "^#" -e "^$" $FILE > /tmp/add$$
+
+trap "rm /tmp/add$$; exit 1" 0 1 2 9 15
+
+KEI=0
+export KEI
+while read LINE
+do
+#	echo $LINE
+	DATA=`echo $LINE |awk -v item=$CLM '{ print $item }'`
+	if [ "$DATA" = "" ]; then
+		echo "skip! <<$LINE>>"
+	else
+		KEI=`expr $DATA + $KEI`
+		echo "$DATA	/ $KEI" 
+	fi
+done < /tmp/add$$
+
+#rm /tmp/add$$
+

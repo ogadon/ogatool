@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ "$1" = "" ]; then
+	UPDATE=5
+else
+	UPDATE=$1
+fi
+
+while :
+do
+	XX=`uptime | sed "s/.*load//" | awk '{ print $2 }' |sed "s/\.//" |sed "s/,//" `
+	XX=`expr $XX / 10`
+	if [ $XX -gt 130 ]; then
+		XX=130
+	fi
+	if [ $XX -eq 0 ]; then
+		XX=1
+	fi
+	#echo "`hostname`|\c"
+	echo -n "`hostname`|"
+	printf "%3d|"  $XX
+	echo "OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|OOOOOOOOO|XXXXXXXXX|XXXXXXXXX|XXXXXXXXX|" |cut -c1-$XX
+	sleep $UPDATE
+done

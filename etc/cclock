@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+#   characteristic clock (world version)
+#
+#       by oga
+#
+
+#EOPT=-e
+
+if [ "$1" = "-h" ]; then
+    echo "usage: cclock [<tz>]"
+	echo "       tz : -12 ... +12"
+	echo "            Japan : -9"
+	exit 1
+fi
+
+if [ "$1" != "" ]; then
+    TZ=XXX$1
+    export TZ
+    echo " TZ : $TZ"
+fi
+
+echo $EOPT " @=====================@\n"
+echo $EOPT " @=====================@\n\033M"
+
+while :
+do
+    echo $EOPT "\033M\033M\c"
+    date +" | %Y/%m/%d %H:%M:%S |"
+    echo ""
+    sleep 1
+done
+

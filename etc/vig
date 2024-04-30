@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+#   vig <keyword> : 引数を含むファイルをviする。
+#
+#   1995/03/27  by oga
+#   2000/05/08  support -r
+#
+
+if [ "$1" = "-h" -o "$1" = "" ]; then
+    echo "usage: vig [-r] <search_key>"
+    exit 1
+fi
+
+if [ "$1" = "-r" ]; then
+    shift
+    LIST=`find . -type f`
+    vim +/$1/ `grep $1 $LIST |awk -F: '{ print $1}' |sort -u `
+else
+    vim +/$1/ `grep $1 * |awk -F: '{ print $1}' |sort -u `
+fi

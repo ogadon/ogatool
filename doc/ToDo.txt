@@ -1,0 +1,91 @@
+(1)wavcut.c (2021/02/14)
+   -exのみ指定してwavファイルを切り取ろうとしたとき、-lv 0にしないと初めのブランクまでの
+   時間がwavファイルの長さになってしまう。
+   -lv は-s指定の時のみ有効にすべきと思われる
+
+
+(1)df.c for MinGW
+   以下の警告の抑止
+C:\Users\oga\ogatool>make
+gcc df.c  -o bin/df.exe -lmpr
+df.c: In function 'main':
+df.c:282:4: warning: passing argument 2 of 'GetDiskFreeSpaceA' from incompatible
+ pointer type [enabled by default]
+    if (GetDiskFreeSpace(path,&sect,&bytes,&free,&total) != TRUE) {
+    ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from df.c:15:
+c:\mingw\include\winbase.h:1291:24: note: expected 'PDWORD' but argument is of t
+ype 'unsigned int *'
+ WINBASEAPI BOOL WINAPI GetDiskFreeSpaceA(LPCSTR,PDWORD,PDWORD,PDWORD,PDWORD);
+                        ^
+df.c:282:4: warning: passing argument 3 of 'GetDiskFreeSpaceA' from incompatible
+ pointer type [enabled by default]
+    if (GetDiskFreeSpace(path,&sect,&bytes,&free,&total) != TRUE) {
+    ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from df.c:15:
+c:\mingw\include\winbase.h:1291:24: note: expected 'PDWORD' but argument is of t
+ype 'unsigned int *'
+ WINBASEAPI BOOL WINAPI GetDiskFreeSpaceA(LPCSTR,PDWORD,PDWORD,PDWORD,PDWORD);
+                        ^
+df.c:282:4: warning: passing argument 4 of 'GetDiskFreeSpaceA' from incompatible
+ pointer type [enabled by default]
+    if (GetDiskFreeSpace(path,&sect,&bytes,&free,&total) != TRUE) {
+    ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from df.c:15:
+c:\mingw\include\winbase.h:1291:24: note: expected 'PDWORD' but argument is of t
+ype 'unsigned int *'
+ WINBASEAPI BOOL WINAPI GetDiskFreeSpaceA(LPCSTR,PDWORD,PDWORD,PDWORD,PDWORD);
+                        ^
+df.c:282:4: warning: passing argument 5 of 'GetDiskFreeSpaceA' from incompatible
+ pointer type [enabled by default]
+    if (GetDiskFreeSpace(path,&sect,&bytes,&free,&total) != TRUE) {
+    ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from df.c:15:
+c:\mingw\include\winbase.h:1291:24: note: expected 'PDWORD' but argument is of t
+ype 'unsigned int *'
+ WINBASEAPI BOOL WINAPI GetDiskFreeSpaceA(LPCSTR,PDWORD,PDWORD,PDWORD,PDWORD);
+ 
+                       ^
+{
+(2)sysinfdsrv.c  for MinGW
+C:\Users\oga\ogatool>make
+gcc sysinfdsrv.c  -o bin/sysinfdsrv.exe -I/c/MSPlatformSDK/Include -lkernel32 -l
+wsock32 -ladvapi32
+sysinfdsrv.c:77:0: warning: "strncasecmp" redefined [enabled by default]
+ #define strncasecmp strnicmp
+ ^
+In file included from sysinfdsrv.c:34:0:
+c:\mingw\include\string.h:125:0: note: this is the location of the previous defi
+nition
+ #define strncasecmp _strnicmp
+ ^
+sysinfdsrv.c: In function 'READ':
+sysinfdsrv.c:226:2: warning: passing argument 4 of 'ReadFile' from incompatible
+pointer type [enabled by default]
+  );
+  ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from sysinfdsrv.c:39:
+c:\mingw\include\winbase.h:1643:24: note: expected 'PDWORD' but argument is of t
+ype 'int *'
+ WINBASEAPI BOOL WINAPI ReadFile(HANDLE,PVOID,DWORD,PDWORD,LPOVERLAPPED);
+                        ^
+sysinfdsrv.c: In function 'WRITE':
+sysinfdsrv.c:251:2: warning: passing argument 4 of 'WriteFile' from incompatible
+ pointer type [enabled by default]
+  );
+  ^
+In file included from c:\mingw\include\windows.h:62:0,
+                 from sysinfdsrv.c:39:
+c:\mingw\include\winbase.h:1796:24: note: expected 'PDWORD' but argument is of t
+ype 'int *'
+ WINBASEAPI BOOL WINAPI WriteFile(HANDLE,PCVOID,DWORD,PDWORD,LPOVERLAPPED);
+                        ^
+
+
+
+

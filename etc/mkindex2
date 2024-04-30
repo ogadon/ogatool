@@ -1,0 +1,87 @@
+#!/bin/sh
+#
+#   mkindex2 : dm の READMEからindex.htmlを作る
+#
+#					96/05/23 by oga.
+#
+#	注意:漢字名つきファイルはリンクできません
+
+INDEX=index.html
+
+echoline()
+{
+	echo -e "<A HREF=\c" >> $INDEX
+	echo -e '"\c' >> $INDEX
+	if [ -d $1 ]; then
+		echo -e "${1}/index.html\c" >> $INDEX
+	else
+		echo -e "${1}\c" >> $INDEX
+	fi
+	echo -e '"\c' >> $INDEX
+	if [ -d $1 ]; then
+		echo -e ">⇒${2}</A>\c" >> $INDEX
+	else
+		echo -e ">${2}</A>\c" >> $INDEX
+	fi
+	shift
+	shift
+	#echo "$*" >> $INDEX 	# 作成者 作成日
+	echo "" >> $INDEX
+	return
+}
+	
+mkindex2()
+{
+  F=0
+  FF=0
+  echo "<title>`pwd`</title>" > $INDEX
+  
+  while read LINE
+  do 
+	if [ "$LINE" = "" ]; then
+		continue
+	fi
+  	if [ $F -eq 0 ]; then
+  		if [ $FF -eq 0 ]; then
+  			echo "<h1>$LINE</h1>" >> $INDEX
+  			FF=1
+  		fi
+  	else
+  		echo -e "  <LI>\c" >> $INDEX
+  		echoline $LINE
+  		# echoline `echo $LINE |awk '{print $1" "$2}'`
+  	fi
+  	echo $LINE |grep "\-\-\-\-"  > /dev/null 2>&1
+  	if [ $? -eq 0 -a $F -eq 0 ]; then
+  		F=1
+  		echo "<UL>" >> $INDEX
+  		echo -e "<LI>\c" >> $INDEX
+  		echoline ../index.html 前のディレクトリ
+  	fi
+  done < README
+  echo "</UL>" >> $INDEX
+
+  return
+}
+
+#
+#  MAIN
+#
+if [ "$1" = "-h" ]; then
+	echo "usage : mkindex2 [-r]"
+	exit 1
+fi
+
+if [ "$1" = "-r" ]; then
+        PWD2=`pwd`
+        for j in `find . -type d -print`
+        do
+                echo "## Make index Ver2  dir=$j"
+                cd $PWD2
+                cd $j
+                mkindex2
+        done
+else
+        mkindex2
+fi
+

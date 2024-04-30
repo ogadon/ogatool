@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+#   dupdel
+#
+#     同じファイルがあったら片方を削除する。
+#
+#     2003/11/22 V1.00 by oga.
+
+if [ "$1" = "-v" ]; then
+    shift
+    VF=1
+fi
+
+TMPF=/tmp/dupdel_$$
+TMPF2=/tmp/dupdel2_$$
+TMPF3=/tmp/dupdel3_$$
+
+trap "rm -f $TMPF $TMPF2 $TMPF3; exit 1" 0 1 2 9 15
+
+# all file list
+ls -l | grep -v -e "^total" -e "^d" > $TMPF
+# sort by size
+cat $TMPF |awk '{print $5}' |sort -n       > $TMPF2
+# sort by size and uniq
+cat $TMPF |awk '{print $5}' |sort -n |uniq > $TMPF3
+
+# 同じサイズのものを取り出す 
+#diff $TMPF2 $TMPF3
+LIST=`diff $TMPF2 $TMPF3| grep "<" |sed "s/^..//" |sort -u`
+#echo "LIST=$LIST"
+
+for i in $LIST
+do
+  # LIST2:同じサイズのファイル一覧 
+  LIST2=`grep " $i " $TMPF |awk '{print $9}'`
+
+  if [ "$VF" = "2" ]; then
+    echo "LIST2=[$LIST2]"
+  fi
+  for i in $LIST2
+  do
+    for j in $LIST2
+    do
+        if [ -f $i -a -f $j ]; then
+            if [ "$i" != "$j" ]; then
+                if [ "$VF" = "1" ]; then
+	            echo "check $i $j"
+                fi
+	        cmp $i $j > /dev/null
+	        if [ $? -eq 0 ]; then
+	            echo "### same file $i $j,  rm $j"
+		    rm $j
+	        fi
+	    fi
+	fi
+    done
+  done
+done
+

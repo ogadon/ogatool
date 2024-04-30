@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+#   check spell
+#
+
+TMP=/tmp/spell_tmp
+
+echo $* > $TMP
+
+#spell $TMP
+ispell $TMP
+
+if [ -f $TMP.bak ]; then
+    echo "NG: `cat $TMP.bak`"
+    echo "OK: `cat $TMP`"
+else
+    echo "[`cat $TMP`] spell OK!"
+fi
+
+rm ${TMP}*

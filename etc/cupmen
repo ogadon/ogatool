@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+#    カップめんタイマー
+#
+#       98/05/08  by おが☆
+#
+
+#ECHO="echo -e"		# for bush
+ECHO="echo"		# for sh
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+    echo "usage: cupmen <min>"
+    exit 1
+fi
+
+SEC=`expr 60 \* $1`
+
+$ECHO "  $1 分間のがまんです。"
+$ECHO ""
+$ECHO ""
+$ECHO "\033M\033M"
+
+while [ $SEC -ne 10 ]
+do
+    $ECHO "  あと $SEC 秒です。    \033M"
+    sleep 10
+    SEC=`expr $SEC - 10`
+done
+
+while [ $SEC -ne 0 ]
+do
+    $ECHO "  あと $SEC 秒です。    \033M"
+    sleep 1
+    SEC=`expr $SEC - 1`
+done
+
+$ECHO "  あと $SEC 秒です。    "
+$ECHO ""
+
+$ECHO "\033[33m  カップめん\007\c"
+sleep 1
+$ECHO "\033[36mが\007\c"
+sleep 1
+$ECHO "\033[34mできました。\007\033[0m"
+$ECHO ""
+

@@ -1,0 +1,3 @@
+#!/bin/sh
+echo ")B"
+echo "%1b(B" |ht

@@ -1,0 +1,336 @@
+#VP   = ../bin
+VP   = ../bin
+TOOL = .
+CC   = gcc
+CPP  = g++
+XLIB = -L/usr/X11R6/lib
+
+# for Linux gcc 
+SJISOPT=-finput-charset=CP932 -fexec-charset=CP932
+
+#---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+TARGETS=$(VP)/age $(VP)/cal2 $(VP)/cgrep $(VP)/cmem $(VP)/cpkt               \
+    $(VP)/csv2nocr $(VP)/ctrain $(VP)/dgclient $(VP)/dgserver $(VP)/dp64     \
+    $(VP)/dp $(VP)/dsync $(VP)/enews $(VP)/getip $(VP)/getword $(VP)/hddinit \
+    $(VP)/hdinfo $(VP)/headtail $(VP)/hexdec $(VP)/id3 $(VP)/kanji2          \
+    $(VP)/kita $(VP)/lanck $(VP)/loto6 $(VP)/lsc $(VP)/midana                \
+    $(VP)/miscclient $(VP)/miscserver $(VP)/mkfile2 $(VP)/mkindex            \
+    $(VP)/netpf $(VP)/path2 $(VP)/rw $(VP)/slow $(VP)/sndtimer $(VP)/sosu2   \
+    $(VP)/sosu $(VP)/sosum $(VP)/stat $(VP)/stereo3d $(VP)/strftime          \
+    $(VP)/subdecode $(VP)/sysinfd $(VP)/tbl2csv $(VP)/tcpan $(VP)/tcpdmpan   \
+    $(VP)/test64 $(VP)/train $(VP)/u2dos $(VP)/ifchk $(VP)/ifchk2 $(VP)/rand \
+    $(VP)/base64 $(VP)/ht $(VP)/filer $(VP)/comdel $(VP)/webget              \
+    $(VP)/class $(VP)/cp2 $(VP)/deltag $(VP)/galaxian $(VP)/hex2bin          \
+    $(VP)/hexbin $(VP)/hscp $(VP)/htlink $(VP)/irctrl $(VP)/iso2022          \
+    $(VP)/joytest $(VP)/kita2 $(VP)/midic $(VP)/netmonitor $(VP)/othello2    \
+    $(VP)/peke2 $(VP)/peke $(VP)/perfan $(VP)/strings2 $(VP)/t64an           \
+    $(VP)/tolower $(VP)/txt2vnt $(VP)/upload $(VP)/wavana $(VP)/wavcut2      \
+    $(VP)/wavcut $(VP)/welcome $(VP)/whichx $(VP)/wwstat $(VP)/xalloc        \
+    $(VP)/zusa $(VP)/rand2 $(VP)/usleep $(VP)/find2 $(VP)/addimgdate
+
+TARGET_X=$(VP)/qix $(VP)/xmem $(VP)/xpkt $(VP)/xpstat $(VP)/cpuid $(VP)/gz 
+
+all: $(TARGETS)
+
+init:
+	mkdir -p $(VP)
+
+clean:
+	rm -f $(TARGETS)
+
+$(VP)/addimgdate : $(TOOL)/addimgdate.c
+	${CC} $? -o $@ -O
+
+$(VP)/age : $(TOOL)/age.c
+	${CC} $? -o $@ -O
+
+$(VP)/base64 : $(TOOL)/base64.c
+	${CC} $? -o $@ -O
+
+$(VP)/cal2 : $(TOOL)/cal.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/cgrep : $(TOOL)/cgrep.c
+	${CC} $? -o $@ -O
+
+$(VP)/class : $(TOOL)/class.c
+	${CC} $? -o $@ -O
+
+$(VP)/cmem : $(TOOL)/cmem.c
+	${CC} $? -o $@ -O
+
+$(VP)/comdel : $(TOOL)/comdel.c
+	${CC} $? -o $@ -O
+
+$(VP)/cp2 : $(TOOL)/cp2.c
+	${CC} $? -o $@ -O
+
+$(VP)/cpkt : $(TOOL)/cpkt.c
+	${CC} $? -o $@ -O
+
+$(VP)/cpuid : $(TOOL)/cpuid.c
+	@if [ ! -d /usr/include/arm-linux-gnueabihf ]; then \
+           ${CC} $? -o $@ -O; \
+        fi 
+
+$(VP)/csv2nocr : $(TOOL)/csv2nocr.c
+	${CC} $? -o $@ -O
+
+$(VP)/ctrain : $(TOOL)/ctrain.c
+	${CC} $? -o $@ -O
+
+$(VP)/deltag : $(TOOL)/deltag.c
+	${CC} $? -o $@ -O
+
+$(VP)/dgclient : $(TOOL)/dgclient.c
+	${CC} $? -o $@ -DLINUX
+
+$(VP)/dgserver : $(TOOL)/dgserver.c
+	${CC} $? -o $@ -DLINUX
+
+$(VP)/dp64 : $(TOOL)/dp64.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/dp : $(TOOL)/dp.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/dsync : $(TOOL)/dsync.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/enews : $(TOOL)/enews.c
+	${CC} $? -o $@ -O
+
+$(VP)/filer : $(TOOL)/filer.c
+	${CC} $? -o $@ -O -DLINUX -I/usr/include/ncursesw -L/usr/lib/arm-linux-gnueabihf -lncursesw
+
+$(VP)/find2 : $(TOOL)/find2.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/galaxian : $(TOOL)/galaxian.c
+	${CC} $? -o $@ -O -DX3050RX -I/usr/include/ncursesw -L/usr/lib/arm-linux-gnueabihf -lncursesw
+
+$(VP)/getip : $(TOOL)/getip.c
+	${CC} $? -o $@ -O
+
+$(VP)/getword : $(TOOL)/getword.c
+	${CC} $? -o $@ -O
+
+$(VP)/gz : $(TOOL)/gz.c
+	${CC} $? -o $@ -O -lz
+
+$(VP)/hddinit : $(TOOL)/hddinit.c
+	${CC} $? -o $@ -O
+
+$(VP)/hdinfo : $(TOOL)/hdinfo.c
+	${CC} $? -o $@ -O
+
+$(VP)/headtail : $(TOOL)/headtail.c
+	${CC} $? -o $@ -O
+
+$(VP)/hex2bin : $(TOOL)/hex2bin.c
+	${CC} $? -o $@ -O
+
+$(VP)/hexbin : $(TOOL)/hexbin.c
+	${CC} $? -o $@ -O
+
+$(VP)/hexdec : $(TOOL)/hexdec.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/hscp : $(TOOL)/hscp.c
+	${CC} $? -o $@ -O 
+
+$(VP)/ht : $(TOOL)/ht.c
+	${CC} $? -o $@ -O
+
+$(VP)/htlink : $(TOOL)/htlink.c
+	${CC} $? -o $@ -O 
+
+$(VP)/id3 : $(TOOL)/id3.c
+	${CC} $? -o $@ -O 
+
+$(VP)/ifchk : $(TOOL)/ifchk.c
+	${CC} $? -o $@ -O 
+
+$(VP)/ifchk2 : $(TOOL)/ifchk2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/irctrl : $(TOOL)/irctrl.c
+	${CC} $? -o $@ -O 
+
+$(VP)/iso2022 : $(TOOL)/iso2022.c
+	${CC} $? -o $@ -O
+
+$(VP)/joytest : $(TOOL)/joytest.c
+	${CC} $? -o $@ -O 
+
+$(VP)/kanji2 : $(TOOL)/kanji2.c
+	${CC} $? -o $@ -O $(SJISOPT)
+
+$(VP)/kita : $(TOOL)/kita.c
+	${CC} $? -o $@ -O 
+
+$(VP)/kita2 : $(TOOL)/kita2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/lanck : $(TOOL)/lanck.c
+	${CC} $? -o $@ -O -lpthread
+
+$(VP)/loto6 : $(TOOL)/loto6.c
+	${CC} $? -o $@ -O 
+
+$(VP)/lsc : $(TOOL)/lsc.c
+	${CC} $? -o $@ -O -DLINUX -I/usr/include/ncursesw
+
+$(VP)/midana : $(TOOL)/midana.c
+	${CC} $? -o $@ -O 
+
+$(VP)/midic : $(TOOL)/midic.c
+	${CC} $? -o $@ -O 
+
+$(VP)/miscclient : $(TOOL)/miscclient.c
+	${CC} $? -o $@ -DLINUX
+
+$(VP)/miscserver : $(TOOL)/miscserver.c
+	${CC} $? -o $@ -DLINUX
+
+$(VP)/mkfile2 : $(TOOL)/mkfile2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/mkindex : $(TOOL)/mkindex.c
+	${CC} $? -o $@
+
+$(VP)/netmonitor : $(TOOL)/netmonitor.c
+	${CC} $? -o $@
+
+$(VP)/netpf : $(TOOL)/netpf.c
+	${CC} $? -o $@ -DLINUX
+
+$(VP)/othello2 : $(TOOL)/othello2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/path2 : $(TOOL)/path2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/peke : $(TOOL)/peke.c
+	${CC} $? -o $@ -O 
+
+$(VP)/peke2 : $(TOOL)/peke2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/perfan : $(TOOL)/perfan.c
+	${CC} $? -o $@ -O 
+
+$(VP)/qix : $(TOOL)/qix.c
+	${CC} $? -o $@ -DX3050R -L/usr/include/X11 -L/usr/X11R6/lib -lX11 -lm -DLINUX
+
+$(VP)/rand : $(TOOL)/rand.c
+	${CC} $? -o $@ -O 
+
+$(VP)/rand2 : $(TOOL)/rand2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/rw : $(TOOL)/rw.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/slow : $(TOOL)/slow.c
+	${CC} $? -o $@ -O 
+
+$(VP)/sndtimer : $(TOOL)/sndtimer.c
+	${CC} $? -o $@ -O 
+
+$(VP)/sosu2 : $(TOOL)/sosu2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/sosu : $(TOOL)/sosu.c
+	${CC} $? -o $@ -O 
+
+$(VP)/sosum : $(TOOL)/sosum.c
+	${CC} $? -o $@ -O -lm -lpthread -static
+
+$(VP)/stat : $(TOOL)/stat.c
+	${CC} $? -o $@ -O -DLINUX
+
+$(VP)/stereo3d : $(TOOL)/stereo3d.c
+	${CC} $? -o $@ -O 
+
+$(VP)/strings2 : $(TOOL)/strings2.c
+	${CC} $? -o $@ -O 
+
+$(VP)/strftime : $(TOOL)/strftime.c
+	${CC} $? -o $@ -O 
+
+$(VP)/subdecode : $(TOOL)/subdecode.c
+	${CC} $? -o $@ -O -DINTEL
+
+$(VP)/sysinfd : $(TOOL)/sysinfd.c
+	${CC} $? -o $@ -O
+
+$(VP)/t64an : $(TOOL)/t64an.c
+	${CC} $? -o $@ -O
+
+$(VP)/tbl2csv : $(TOOL)/tbl2csv.c
+	${CC} $? -o $@ -O
+
+$(VP)/tcpan : $(TOOL)/tcpan.c
+	${CC} $? -o $@ -O
+
+$(VP)/tcpdmpan : $(TOOL)/tcpdmpan.c
+	${CC} $? -o $@ -O
+
+$(VP)/test64  : $(TOOL)/test64.c
+	${CC} $? -o $@ -O
+
+$(VP)/tolower : $(TOOL)/tolower.c
+	${CC} $? -o $@ -O
+
+$(VP)/train : $(TOOL)/train.c
+	${CC} $? -o $@ -O 
+
+$(VP)/txt2vnt : $(TOOL)/txt2vnt.c
+	${CC} $? -o $@ -O 
+
+$(VP)/u2dos : $(TOOL)/u2dos.c
+	${CC} $? -o $@ -O 
+
+$(VP)/upload : $(TOOL)/upload.c
+	${CC} $? -o $@ -O 
+
+$(VP)/usleep : $(TOOL)/usleep.c
+	${CC} $? -o $@ -O 
+
+$(VP)/wavana : $(TOOL)/wavana.c
+	${CC} $? -o $@ -O
+
+$(VP)/wavcut2 : $(TOOL)/wavcut2.c
+	${CC} $? -o $@ -O
+
+$(VP)/wavcut : $(TOOL)/wavcut.c
+	${CC} $? -o $@ -O
+
+$(VP)/webget : $(TOOL)/webget.c
+	${CC} $? -o $@ -O 
+
+$(VP)/welcome : $(TOOL)/welcome.c
+	${CC} $? -o $@
+
+$(VP)/whichx : $(TOOL)/which.c
+	${CC} $? -o $@ -O
+
+$(VP)/wwstat : $(TOOL)/wwstat.c
+	${CC} $? -o $@ -O
+
+$(VP)/xalloc : $(TOOL)/xalloc.c
+	${CC} $? -o $@ -O
+
+$(VP)/xmem : $(TOOL)/xmem.c
+	${CC} $? -o $@ -O $(XLIB) -lX11 -lm
+
+$(VP)/xpkt : $(TOOL)/xpkt.c
+	${CC} $? -o $@ -O $(XLIB) -lX11 -lm
+
+$(VP)/xpstat : $(TOOL)/xpstat.c
+	${CC} $? -o $@ -O $(XLIB) -lX11
+
+$(VP)/zusa : $(TOOL)/zusa.c
+	${CC} $? -o $@ -O
+

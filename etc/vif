@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+#  vif : カレントディレクト以下からファイルを探し出して
+#        開く
+#
+if [ "$1" = "" ]; then
+	echo "usage : $0 <filename>"
+	exit 1
+fi
+
+vi `find . -name "$1"`

@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+#   csv2tbl <filename>
+#
+#   CSV ÇHTMLÇÃ TABLEå`éÆÇ…Ç∑ÇÈÅB  96/06/24  V1.00 (C)1996, Moritaka Ogasawara.
+#
+
+if [ "$1" = "-h" ]; then
+	#echo "usage : csv2tbl [-l|-r] [<filename>]"
+	echo "usage : csv2tbl [-l|-r]"
+	exit 1
+fi
+
+if [ "$1" = "-l" ]; then
+	FL=L
+	shift
+fi
+if [ "$1" = "-r" ]; then
+	FL=R
+	shift
+fi
+
+TMP=/tmp/csv2tbl.tmp
+
+if [ -f $TMP ]; then
+    rm -f $TMP
+fi
+
+echo '<TABLE CELLPADDING=0 CELLSPACING=1 BORDER=1 WIDTH="90%">'
+
+while read LINE
+do
+	echo -e "  \c"
+	#echo $LINE |sed "s/^/<TR><TD>/" |sed "s/,/<\/TD><TD>/g" |sed "s/$/<\/TD>/"
+	if [ "$FL" = "L" ]; then
+	  echo $LINE |sed -e 's@^@<TR><TD>@' -e 's@,@</TD><TD>@g' \
+					     -e "s@\$@</TD>@"
+	elif [ "$FL" = "R" ]; then
+	  echo $LINE |sed -e 's/^/<TR><TD ALIGN="right">/' \
+			   -e 's/,/<\/TD><TD ALIGN="right">/g' -e "s/\$/<\/TD>/"
+	else
+	  echo $LINE |sed -e 's/^/<TR><TD ALIGN="center">/' \
+			  -e 's/,/<\/TD><TD ALIGN="center">/g' -e "s/\$/<\/TD>/"
+	fi
+	touch $TMP
+#done < $1
+done
+echo "</TABLE>"
+
+if [ -f $TMP ]; then
+    rm -f $TMP
+    exit 0
+else
+    # no line
+    exit 1
+fi

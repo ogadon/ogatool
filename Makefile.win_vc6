@@ -1,0 +1,416 @@
+#
+#   Makefile for MSVC6
+#
+
+#VP   =../bin
+VP   = bin_vc
+TOOL = .
+
+# for gcc
+#CC   = gcc
+#CPP  = g++
+#OOPT = -O
+#PSDKLIB=/c/MSPlatformSDK/Lib
+#PSDKINC=/c/MSPlatformSDK/Include
+
+# for Visual Studio
+CC     = cl
+CPP    = cl
+NOLOGO = -nologo
+OOPT   = /O2
+MTOPT  = /MT
+#PSDKLIB=C:\MSPlatformSDK\Lib
+#PSDKINC=C:\MSPlatformSDK\Include
+PSDKLIB=C:\MSPSDK\Lib
+PSDKINC=C:\MSPSDK\Include
+DXSDKINC=C:\DirectXSDK_June2010\Include
+
+#XLIB = -L/usr/X11R6/lib
+
+# for MinGW gcc 
+#SJISOPT=-finput-charset=CP932 -fexec-charset=CP932
+
+#---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+TARGETS = $(VP)/age.exe $(VP)/cal.exe $(VP)/cgrep.exe $(VP)/csv2nocr.exe    \
+  $(VP)/dp.exe $(VP)/dp64.exe $(VP)/dsync.exe               \
+  $(VP)/find2.exe $(VP)/getword.exe $(VP)/hddinit.exe $(VP)/hdinfo.exe      \
+  $(VP)/headtail.exe $(VP)/hexdec.exe $(VP)/id3.exe $(VP)/ifchk2.exe        \
+  $(VP)/ifchk.exe $(VP)/kanji2.exe $(VP)/kita.exe $(VP)/loto6.exe           \
+  $(VP)/mkfile2.exe $(VP)/mkindex.exe $(VP)/path2.exe $(VP)/rw.exe          \
+  $(VP)/sosu2.exe $(VP)/sosu.exe $(VP)/sosum.exe             \
+  $(VP)/stat.exe $(VP)/stereo3d.exe $(VP)/strftime.exe  \
+  $(VP)/tcpan.exe $(VP)/test64.exe     \
+  $(VP)/train.exe $(VP)/u2dos.exe $(VP)/base64.exe $(VP)/ht.exe             \
+  $(VP)/du.exe $(VP)/expr2.exe $(VP)/fold2.exe $(VP)/fullpath.exe           \
+  $(VP)/getmypath.exe $(VP)/id.exe $(VP)/load.exe $(VP)/malloc.exe          \
+  $(VP)/pwd.exe $(VP)/rand2.exe $(VP)/raw.exe $(VP)/readls.exe              \
+  $(VP)/rndplay.exe $(VP)/timex.exe $(VP)/uname.exe $(VP)/tee.exe           \
+  $(VP)/test64_win.exe \
+  $(VP)/class.exe $(VP)/cp2.exe $(VP)/hex2bin.exe          \
+  $(VP)/hscp.exe $(VP)/htlink.exe        \
+  $(VP)/peke2.exe $(VP)/peke.exe         \
+  $(VP)/perfan.exe $(VP)/strings2.exe $(VP)/t64an.exe $(VP)/tolower.exe     \
+  $(VP)/txt2vnt.exe $(VP)/wavana.exe $(VP)/wavcut2.exe     \
+  $(VP)/wavcut.exe $(VP)/which.exe $(VP)/xalloc.exe \
+  $(VP)/color2.exe 
+
+# $(VP)/enews.exe $(VP)/slow.exe $(VP)/subdecode.exe $(VP)/tbl2csv.exe $(VP)/tcpdmpan.exe $(VP)/deltag.exe $(VP)/hexbin.exe $(VP)/iso2022.exe $(VP)/kita2.exe$ (VP)/othello2.exe $(VP)/upload.exe $(VP)/zusa.exe
+
+TARGETS_MS = $(VP)/cpuid.exe $(VP)/df.exe $(VP)/dgclient.exe $(VP)/dgserver.exe $(VP)/getip.exe $(VP)/lanck.exe $(VP)/midana.exe $(VP)/netpf.exe $(VP)/regsv.exe $(VP)/sendevt.exe $(VP)/shutdown.exe $(VP)/sysinfdsrv.exe $(VP)/sysinfd_win.exe $(VP)/sysperf.exe $(VP)/winmidisample.exe $(VP)/midiapi.exe $(VP)/play.exe $(VP)/joytest.exe $(VP)/icmpsnd.exe $(VP)/getver.exe $(VP)/getsysm.exe $(VP)/findwin.exe $(VP)/clip.exe $(VP)/midic.exe $(VP)/ctrain.exe 
+
+# $(VP)/ctrain.exe $(VP)/lsc.exe $(VP)/miscclient.exe $(VP)/miscserver.exe $(VP)/sndtimer.exe $(VP)/sysinfd.exe $(VP)/pcap_test.exe $(VP)/dxshow.exe $(VP)/readevt.exe 
+
+all: $(TARGETS) $(TARGETS_MS)
+
+init:
+	mkdir -p $(VP)
+
+clean:
+	rm -f $(TARGETS)
+
+$(VP)/age.exe : age.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/base64.exe : base64.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/cal.exe : cal.c
+	$(CC) $? $(NOLOGO) -o $@ -DDOS
+
+$(VP)/cgrep.exe : cgrep.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/class.exe : class.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/color2.exe : color2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/cp2.exe : cp2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/cpuid.exe : cpuid.c
+	$(CC) $? $(NOLOGO) -o $@ -DDOS
+
+$(VP)/cpuusage.exe : cpuusage.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/csv2nocr.exe : csv2nocr.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/ctrain.exe : ctrain.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/deltag.exe : deltag.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/df.exe : df.c
+	$(CC) $? $(NOLOGO) -o $@ mpr.lib
+
+$(VP)/dgclient.exe : dgclient.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/dgserver.exe : dgserver.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/dp.exe : dp.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/dp64.exe : dp64.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/dsync.exe : dsync.c
+	$(CC) $? $(NOLOGO) -o $@ $(OOPT)
+
+$(VP)/enews.exe : enews.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/find2.exe : find2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/fold2.exe : fold2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/getip.exe : getip.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/getword.exe : getword.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/hddinit.exe : hddinit.c
+	$(CC) $? $(NOLOGO) -o $@ $(MTOPT)
+
+$(VP)/hdinfo.exe : hdinfo.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/headtail.exe : headtail.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/hex2bin.exe : hex2bin.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/hexbin.exe : hexbin.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/hexdec.exe : hexdec.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/hscp.exe : hscp.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/ht.exe : ht.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/htlink.exe : htlink.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/id.exe : id.c
+	$(CC) $? $(NOLOGO) -o $@ advapi32.lib
+
+$(VP)/id3.exe : id3.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/ifchk.exe : ifchk.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/ifchk2.exe : ifchk2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/iso2022.exe : iso2022.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/kanji2.exe : kanji2.c
+	$(CC) $? $(NOLOGO) -o $@ $(SJISOPT)
+
+$(VP)/kita.exe : kita.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/kita2.exe : kita2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/lanck.exe : lanck.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/loto6.exe : loto6.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/lsc.exe : lsc.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/midana.exe : midana.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib winmm.lib
+
+$(VP)/midic.exe : midic.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/miscclient.exe : miscclient.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/miscserver.exe : miscserver.c
+	$(CC) $? $(NOLOGO) -o $@ wsock32.lib
+
+$(VP)/mkfile2.exe : mkfile2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/mkindex.exe : mkindex.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/netpf.exe : netpf.c
+	$(CC) $? $(NOLOGO) -o $@ -DDOS wsock32.lib
+
+$(VP)/othello2.exe : othello2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/path2.exe : path2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/peke.exe : peke.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/peke2.exe : peke2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/perfan.exe : perfan.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/pwd.exe : pwd.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/rw.exe : rw.c
+	$(CC) $? $(NOLOGO) -DDOS -o $@
+
+$(VP)/slow.exe : slow.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/sndtimer.exe : sndtimer.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/sosu2.exe : sosu2.c
+	$(CC) $? $(NOLOGO) -o $@ $(OOPT)
+
+$(VP)/sosu.exe : sosu.c
+	$(CC) $? $(NOLOGO) -o $@ $(OOPT)
+
+$(VP)/sosum.exe : sosum.c
+	$(CC) $? $(NOLOGO) -o $@ $(OOPT)
+
+$(VP)/stat.exe : stat.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/stereo3d.exe : stereo3d.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/strftime.exe : strftime.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/subdecode.exe : subdecode.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/sysinfd_win.exe : sysinfd_win.c
+	$(CC) $? $(NOLOGO) -o $@ -I$(PSDKINC) $(PSDKLIB)\kernel32.lib wsock32.lib
+
+$(VP)/tbl2csv.exe : tbl2csv.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/tcpan.exe : tcpan.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/tcpdmpan.exe : tcpdmpan.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/test64.exe : test64.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/test64_win.exe : test64_win.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/train.exe : train.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/u2dos.exe : u2dos.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/clip.exe : clip.cpp
+	$(CC) $? $(NOLOGO) -o $@ user32.lib mpr.lib
+
+$(VP)/du.exe : du.c
+	$(CC) $? $(NOLOGO) -o $@ $(SJISOPT)
+
+$(VP)/dxshow.exe : dxshow.cpp
+	$(CC) $? $(NOLOGO) -o $@ -I$(DXSDKINC) Strmiids.lib ole32.lib
+
+$(VP)/expr2.exe : expr2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/findwin.exe : findwin.c
+	$(CC) $? $(NOLOGO) -o $@ user32.lib
+
+$(VP)/fullpath.exe : fullpath.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/getmypath.exe : getmypath.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/getsysm.exe : getsysm.c
+	$(CC) $? $(NOLOGO) -o $@ user32.lib
+
+$(VP)/getver.exe : getver.cpp
+	$(CC) $? $(NOLOGO) -o $@ version.lib
+
+$(VP)/icmpsnd.exe : icmpsnd.c
+	$(CC) $? $(NOLOGO) -o $@ -I$(PSDKINC) $(PSDKLIB)\IPHlpApi.Lib wsock32.lib
+
+$(VP)/joytest.exe : joytest.cpp
+	$(CC) $? $(NOLOGO) -o $@ dinput.lib dxguid.lib
+
+$(VP)/load.exe : load.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/malloc.exe : malloc.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/midiapi.exe : midiapi.c
+	$(CC) $? $(NOLOGO) -o $@ winmm.lib
+
+$(VP)/pcap_test.exe : pcap_test.c
+	$(CC) $? $(NOLOGO) -o $@ -Ipcap/Include /DWIN32 /DWPCAP
+
+$(VP)/play.exe : play.c
+	$(CC) $? $(NOLOGO) -o $@ Winmm.lib 
+
+$(VP)/rand2.exe : rand2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/raw.exe : raw.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/readevt.exe : readevt.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/readls.exe : readls.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/regsv.exe : regsv.cpp
+	$(CC) $? $(NOLOGO) -o $@ advapi32.lib
+
+$(VP)/rndplay.exe : rndplay.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/sendevt.exe : sendevt.c
+	$(CC) $? $(NOLOGO) -o $@ user32.lib
+
+$(VP)/shutdown.exe : shutdown.c
+	$(CC) $? $(NOLOGO) -o $@ -I$(PSDKINC) user32.lib advapi32.lib $(PSDKLIB)\powrprof.lib
+
+$(VP)/strings2.exe : strings2.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/sysinfdsrv.exe : sysinfdsrv.c
+	$(CC) $? $(NOLOGO) -o $@ -I$(PSDKINC) $(PSDKLIB)\kernel32.lib wsock32.lib advapi32.lib
+
+$(VP)/sysperf.exe : sysperf.c
+	$(CC) $? $(NOLOGO) -o $@ advapi32.lib
+
+$(VP)/t64an.exe : t64an.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/tee.exe : tee.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/timex.exe : timex.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/tolower.exe : tolower.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/txt2vnt.exe : txt2vnt.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/uname.exe : uname.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/upload.exe : upload.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/wavana.exe : wavana.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/wavcut.exe : wavcut.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/wavcut2.exe : wavcut2.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/which.exe : which.c
+	$(CC) $? $(NOLOGO) -o $@ -DDOS -DX68K
+
+$(VP)/xalloc.exe : xalloc.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/winmidisample.exe : winmidisample.c
+	$(CC) $? $(NOLOGO) -o $@ user32.lib winmm.lib gdi32.lib comdlg32.lib
+
+$(VP)/zusa.exe : zusa.c
+	$(CC) $? $(NOLOGO) -o $@
+
+

@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+#  winerr : WindowsÉGÉâÅ[î‘çÜÇÃâêÕ
+#
+#  V1.01 2001/01/12 add /kita1/documents/memo/xw.winerr search by oga
+#  V1.02 2008/12/31 support DirectX Error
+#
+INCLUDE=/home/oga/win/include
+
+ERRNO=$INCLUDE/errno.h
+WINERR=$INCLUDE/winerror.h
+SOCKERR=$INCLUDE/winsock.h
+LMERR=$INCLUDE/lmerr.h
+DXERR=$INCLUDE/vfwmsgs.h
+
+WINERRLIST=/home/oga/doc/xw.winerr
+
+if [ "$1" = "" ]; then
+	echo "usage : `basename $0` [-dx] <err_code>"
+	exit 1
+fi
+
+DXF=0
+if [ "$1" = "-dx" ]; then
+    DXF=1
+    shift
+fi
+
+if [ "$DXF" = "1" ]; then
+    grep -q $1 $DXERR
+    if [ $? -eq 0 ]; then
+        echo "Å° DirectX Error($1)"
+        grep -B2 "define.*HRESULT.*$1" $DXERR
+    fi
+    exit;
+fi
+
+if [ $1 -gt 9999 ]; then
+    ERR=`expr $1 - 10000`
+    echo "Å° socket error ($1)"
+    grep "\+$ERR" $SOCKERR
+elif [ $1 -gt 2099 ]; then 
+    ERR=`expr $1 - 2100`
+    echo "Å° LanManager error ($1)"
+    grep "define.*\+$ERR)" $LMERR
+    #grep -e "^$1," -e ",$1," $WINERRLIST
+else
+    echo "Å° errno($1)"
+    grep "define.*[	 ][	 ]*$1" $ERRNO
+    echo "Å° GetLastError($1)"
+    grep "define.*[	 ][	 ]*${1}L" $WINERR
+    #grep -e "^$1," -e ",$1," $WINERRLIST
+fi
+

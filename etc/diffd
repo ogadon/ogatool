@@ -1,0 +1,146 @@
+#!/bin/sh
+#
+#   指定ディレクトリのソースのうち変更のあるファイルのdiffをとり、
+#   /tmp/diff_<uid>に出力する
+# 
+#   olddir      : 旧ファイルのあるディレクトリ
+#   -f filename : 特定のファイルのみ行なう場合
+#   -step       : 各ファイルの修正ステップ数のみ取得する場合
+#
+#   99/09/28 V1.01  -step support by oga
+#   00/02/26 V1.02  "{" support (for vi)
+#   00/09/04 V1.03  -diff <diff_cmd>
+#   00/10/25 V1.04  -u(unified diff) support
+#   00/11/04 V1.05  mgdiff support
+#   01/02/02 V1.06  -f multifile support
+#   02/02/24 V1.07  check delete file
+#   04/03/08 V1.08  -u/-C 同時指定可とした  
+#   07/03/07 V1.09  -u/-C 同時指定NGとした  
+#
+
+WK=/tmp/diff_`id -u -n`
+COPT=-C4			# diffの前後の行数
+UOPT=
+DIFF=diff
+STEP=0
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+	echo "usage : diffd [-w] [-u] <olddir> [-step] [{-f filename ...| num<4>}]"
+	echo "        <olddir> : 比較元ファイルのあるディレクトリ"
+	echo "        -w       : 空白を無視して差分をとる"
+	echo "        -u       : unified diff"
+	echo "        -f       : 指定ファイルのみ差分をとる"
+	echo "        -step    : 変更ステップ数表示"
+	echo "        num      : 差分の前後に出力する行数"
+	exit 1
+fi
+
+if [ "$1" = "-diff" ]; then
+	DIFF="$2"
+	shift
+	shift
+fi
+
+if [ "$1" = "-w" ]; then
+	DIFF="$DIFF -w"
+	echo "★空白は無視して差分をとります"
+	shift
+fi
+
+if [ "$1" = "-c" ]; then
+	COBOL=1
+	echo "★COBOL option"
+	shift
+fi
+
+if [ "$1" = "-u" ]; then
+	echo "★unified format で差分を取ります"
+	UF=1
+	UOPT=-u
+	COPT=
+	shift
+fi
+
+if [ "$1" = "-m" ]; then    #V1.05
+    MGDIFF=1
+    shift
+fi
+
+OLDDIR=$1
+shift
+
+if [ "$1" = "-step" ]; then  #V1.01
+	STEP=1               #V1.01
+	shift                #V1.01
+fi                           #V1.01
+
+if [ "$1" = "-f" ]; then
+	shift
+	FILENM=$*
+	shift
+else
+    if [ "$1" != "" -a "$UF" != "1" ]; then  # V1.08-C V1.09-C
+    #if [ "$1" != "" ]; then
+	NUM=$1
+	COPT=-C$1
+	echo "★diffは前後 $NUM 行とります。"
+	shift
+    fi
+fi
+
+if [ -f $WK ]; then
+	rm $WK
+fi
+
+if [ "$FILENM" = "" ]; then
+	LIST=`ls $OLDDIR`
+else
+	LIST=`(cd $OLDDIR; ls ${FILENM}* )`
+fi
+
+for i in $LIST
+do
+	echo $i |awk '{printf"  %-16s: ",$1}'
+
+    if [ ! -f $i ]; then
+	    echo "<= 削除されました。"
+		continue
+	fi
+
+	$DIFF $OLDDIR/$i $i > /dev/null
+	if [ $? -eq 1 ]; then
+		echo "変更されています。diffをとります。"
+		echo "{"		                >> $WK
+		echo "■ ファイル : `pwd`/$i"		>> $WK
+		echo "<変更前>"				>> $WK
+		echo "   省略"				>> $WK
+		echo ""					>> $WK
+		echo "<変更後>"				>> $WK
+
+		#$DIFF $COPT $OLDDIR/$i $i		>> $WK
+		# diff: conflicting specifications of output style 抑止 V1.08-C
+		# -u は -Cの後ろにしないと無効になってしまう 
+		$DIFF $COPT $UOPT $OLDDIR/$i $i  2>&1 |\
+		    grep -v "conflicting specifications of output style" >> $WK
+
+		echo -e "\n"				>> $WK
+
+		if [ $STEP -eq 1 ]; then    # V1.01
+		    c $WK                   # V1.01
+		    echo -e "\n"            # V1.01
+		    rm $WK                  # V1.01
+		fi                          # V1.01
+
+		if [ "$MGDIFF" = "1" ]; then    # V1.05
+		    mgdiff $OLDDIR/$i $i
+		fi
+
+	else
+		echo "変更ありません。"
+	fi
+done
+echo "終了!!"
+
+if [ $STEP -ne 1 ]; then
+  echo "  結果は ${WK} に出力しました。"
+fi
