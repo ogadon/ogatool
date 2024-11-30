@@ -1,0 +1,114 @@
+#
+#   Makefile for x68k
+#
+
+VP   =../bin
+#VP   =test_bin
+TOOL = .
+
+# for gcc
+CC   = gcc
+CPP  = g++
+OOPT = -O
+STDINC = -I../include
+STDLIB = -L../lib
+#OPT  = $(STDINC) $(STDLIB)
+OPT  = $(OOPT)
+#INCLUDE = c:\users\oga\x68k\include
+
+XLIB = -L/usr/X11R6/lib
+
+#---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
+TARGETS = $(VP)/age.x $(VP)/cal.x $(VP)/cgrep.x $(VP)/filer.x $(VP)/find2.x \
+          $(VP)/galaxian.x $(VP)/lsc.x $(VP)/path2.x $(VP)/pwd.x $(VP)/rw.x \
+          $(VP)/which.x $(VP)/sosu.x $(VP)/sosu2.x $(VP)/u2dos.x $(VP)/dp.x \
+          $(VP)/expr2.x $(VP)/hexdec.x $(VP)/enews.x $(VP)/ifchk.x          \
+          $(VP)/ifchk2.x $(VP)/stat.x $(VP)/qix68k.x $(VP)/mexhat.x         \
+          $(VP)/usleep.x $(VP)/test.x $(VP)/mexhat2.x 
+
+all: $(TARGETS)
+
+init:
+	mkdir -p $(VP)
+
+clean:
+	rm -f $(TARGETS)
+
+$(VP)/age.x : age.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/cal.x : cal.c
+	$(CC) $? $(NOLOGO) $(OPT) -liocs -o $@
+
+$(VP)/cgrep.x : cgrep.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/dp.x : dp.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/enews.x : enews.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/expr2.x : expr2.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/filer.x : filer.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68000 -liocs -ldos -o $@
+
+$(VP)/find2.x : find2.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68K -o $@
+
+$(VP)/galaxian.x : galaxian.c
+	$(CC) $? $(NOLOGO) $(OPT) -ldos -o $@
+
+$(VP)/hexdec.x : hexdec.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/ifchk.x : ifchk.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/ifchk2.x : ifchk2.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/lsc.x : lsc.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68000 -liocs -o $@
+
+$(VP)/mexhat.x : mexhat.c
+	$(CC) $? $(NOLOGO) $(OPT) -liocs -o $@
+
+$(VP)/mexhat2.x : mexhat2.c
+	$(CC) $? $(NOLOGO) $(OPT) -liocs -o $@
+
+$(VP)/path2.x : path2.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68K -o $@
+
+$(VP)/pwd.x : pwd.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68K -o $@
+
+$(VP)/qix68k.x : qix68k.c
+	$(CC) $? $(NOLOGO) $(OPT) -liocs -ldos -o $@
+
+$(VP)/rw.x : rw.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/sosu.x : sosu.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/sosu2.x : sosu2.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/stat.x : stat.c
+	$(CC) $? $(NOLOGO) $(OPT) -D_WIN32 -o $@
+
+$(VP)/test.x : test.c
+	$(CC) $? $(NOLOGO) $(OPT) -liocs -o $@
+
+$(VP)/usleep.x : usleep.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/u2dos.x : u2dos.c
+	$(CC) $? $(NOLOGO) $(OPT) -o $@
+
+$(VP)/which.x : which.c
+	$(CC) $? $(NOLOGO) $(OPT) -DX68K -o $@
+

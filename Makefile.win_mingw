@@ -52,7 +52,8 @@ TARGETS = $(VP)/age.exe $(VP)/cal.exe $(VP)/cgrep.exe $(VP)/csv2nocr.exe    \
   $(VP)/getsysm.exe $(VP)/midiapi.exe $(VP)/play.exe $(VP)/sendevt.exe      \
   $(VP)/shutdown.exe $(VP)/sysperf.exe $(VP)/winmidisample.exe              \
   $(VP)/dgclient.exe $(VP)/dgserver.exe $(VP)/netpf.exe                     \
-  $(VP)/netpf_send.exe $(VP)/webget.exe 
+  $(VP)/netpf_send.exe $(VP)/webget.exe $(VP)/addimgdate.exe                \
+  $(VP)/head2.exe 
 
 TARGETS_MS = $(VP)/cpuid.exe $(VP)/ctrain.exe $(VP)/df.exe $(VP)/lsc.exe $(VP)/miscclient.exe $(VP)/miscserver.exe $(VP)/sndtimer.exe $(VP)/sysinfd.exe $(VP)/regsv.exe $(VP)/sysinfd_win.exe $(VP)/pcap_test.exe $(VP)/joytest.exe $(VP)/icmpsnd.exe $(VP)/getver.exe $(VP)/dxshow.exe $(VP)/clip.exe $(VP)/readevt.exe $(VP)/midic.exe 
 
@@ -65,6 +66,9 @@ clean:
 	rm -f $(TARGETS)
 
 $(VP)/age.exe : age.c
+	$(CC) $? $(NOLOGO) -o $@ 
+
+$(VP)/addimgdate.exe : addimgdate.c
 	$(CC) $? $(NOLOGO) -o $@ 
 
 $(VP)/base64.exe : base64.c
@@ -134,6 +138,9 @@ $(VP)/hddinit.exe : hddinit.c
 	$(CC) $? $(NOLOGO) -o $@ $(MTOPT)
 
 $(VP)/hdinfo.exe : hdinfo.c
+	$(CC) $? $(NOLOGO) -o $@
+
+$(VP)/head2.exe : head.c
 	$(CC) $? $(NOLOGO) -o $@
 
 $(VP)/headtail.exe : headtail.c

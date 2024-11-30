@@ -26,7 +26,8 @@ TARGETS=$(VP)/age $(VP)/cal2 $(VP)/cgrep $(VP)/cmem $(VP)/cpkt               \
     $(VP)/peke2 $(VP)/peke $(VP)/perfan $(VP)/strings2 $(VP)/t64an           \
     $(VP)/tolower $(VP)/txt2vnt $(VP)/upload $(VP)/wavana $(VP)/wavcut2      \
     $(VP)/wavcut $(VP)/welcome $(VP)/whichx $(VP)/wwstat $(VP)/xalloc        \
-    $(VP)/zusa $(VP)/rand2 $(VP)/usleep $(VP)/find2 $(VP)/addimgdate
+    $(VP)/zusa $(VP)/rand2 $(VP)/usleep $(VP)/find2 $(VP)/addimgdate         \
+    $(VP)/head2
 
 TARGET_X=$(VP)/qix $(VP)/xmem $(VP)/xpkt $(VP)/xpstat $(VP)/cpuid $(VP)/gz 
 
@@ -122,6 +123,9 @@ $(VP)/hddinit : $(TOOL)/hddinit.c
 	${CC} $? -o $@ -O
 
 $(VP)/hdinfo : $(TOOL)/hdinfo.c
+	${CC} $? -o $@ -O
+
+$(VP)/head2 : $(TOOL)/head.c
 	${CC} $? -o $@ -O
 
 $(VP)/headtail : $(TOOL)/headtail.c
